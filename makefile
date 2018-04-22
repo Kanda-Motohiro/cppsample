@@ -3,7 +3,10 @@ run: a.out
 
 CXXFLAGS=-g -Wall -std=c++1z -O0
 
-a.out: vec.cpp
+a.out: i8n.cpp
+	clang++ ${CXXFLAGS} i8n.cpp -lpthread
+
+v.out: vec.cpp
 	clang++ ${CXXFLAGS} vec.cpp
 
 b.out: string.cpp
