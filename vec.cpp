@@ -31,6 +31,21 @@ public:
     virtual const string toString() const { return s; }
 };
 
+class Base2 {
+public:
+    string s = "null";
+    Base2() { cout << "def ctor" << endl; }
+    Base2(string a) :s(a) { cout << "ctor-" << a << endl; }
+    Base2& operator=(const Base2& b) { s = b.s;
+    cout << "assign-" << b.s << endl;
+    return *this; }
+    Base2(const Base2& b) :s(b.s) { cout << "copy-" << b.s << endl; }
+    //Base2(Base2&& b) :s(b.s) { b.s = "";
+    //cout << "moved " << s << endl; }
+    virtual ~Base2() { cout << "destructor " << s << endl; }
+    virtual const string toString() const { return s; }
+};
+
 class Composit {
 public:
     Base b;
@@ -39,7 +54,14 @@ public:
     const string toString() const { return b.s; }
 };
 
-Base func(string s) { Base h(s); return h; }
+template <class T>
+T __attribute__((noinline)) func(string s) { T h(s);
+p2(h);
+return h; }
+
+Base2 func2(string s) {
+Base2 a(s); // 実体はスタックなので、ctor, copy-ctor, dtor が呼ばれるはず？
+return a; }
 
 int main()
 {
@@ -53,6 +75,11 @@ int main()
     // この書き方だと、毎回、オブジェクトの生成消滅が起きるわけだ。
     for (auto i: vec) { p2(i); }
     for (auto& i: vec) { p2(i); }
+
+    for (auto i: vec) { i.s = "modified"; }
+    parr2(vec);
+    for (auto& i: vec) { i.s = "modified"; }
+    parr2(vec);
     p("----end iter----");
 
     vector<Base*> ved = { new Base("d"), new Base("e") };
@@ -66,10 +93,12 @@ int main()
     p2(a);
     p2(g);
 
-    Base h = func("h");
+    Base h = func<Base>("h");
     p2(h);
-    Base&& i = func("i"); // ??
+    Base2 i = func<Base2>("i");
     p2(i);
+    Base2 j = func2("j");
+    p2(j);
     p("---- end of scope ----");
 }
 
