@@ -3,7 +3,10 @@ run: a.out
 
 CXXFLAGS=-g -Wall -std=c++1z -O0
 
-a.out: shared.cpp
+a.out: except.cpp
+	clang++ ${CXXFLAGS} $^
+
+s.out: shared.cpp
 	clang++ ${CXXFLAGS} $^
 
 i.out: i8n.cpp
