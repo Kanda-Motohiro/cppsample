@@ -22,5 +22,9 @@ int main()
     p(d);
     c.assign(16, 'C');
     p(c);
+
+    p(to_string(stoi("1234")));
+    p(int("123"));
+    //p(string(123));
 }
 
