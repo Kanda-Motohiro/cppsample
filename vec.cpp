@@ -20,16 +20,72 @@ public:
     string s = "null";
     Base() { cout << "def ctor" << endl; }
     Base(string a) :s(a) { cout << "ctor-" << a << endl; }
-    Base& operator=(const Base& b) { s = b.s;
-    cout << "assign-" << b.s << endl;
-    return *this; }
+    // copy ctor
     Base(const Base& b) :s(b.s) { cout << "copy-" << b.s << endl; }
-    Base(Base&& b) :s(b.s) { b.s = "";
-    cout << "moved " << s << endl;
-    }
+    Base& operator=(const Base& b) { s = b.s; cout << "assign-" << b.s << endl; return *this; }
+
+    // move ctor
+    Base(Base&& b) :s(b.s) { b.s = ""; cout << "moved " << s << endl; }
+    Base& operator=(Base&& b) { s = b.s; b.s = ""; cout << "move-" << s << endl; return *this; }
+
+    // なんで、これが使われることがある？
+    //Base(Base& b) :s(b.s) { cout << "Xcopy-" << b.s << endl; }
+    //Base& operator=(Base& b) { s = b.s; cout << "Xassign-" << b.s << endl; return *this; }
+
     virtual ~Base() { cout << "destructor " << s << endl; }
     virtual const string toString() const { return s; }
 };
+
+Base& sub2(Base& a) { return a; }
+
+class Derived: public Base {
+public:
+    Derived(string a) : Base(a), s(a) {}
+    //Derived(const Derived &a) : s(a.s) {}
+    Derived(const Derived &a) : Base(a), s(a.s) {}
+    string s;
+    virtual ~Derived() {}
+};
+
+void sub()
+{
+    vector<Base> vec;
+    vector<Base*> vec2;
+    //vector<Base&> vec3;
+    Base a{"A"};
+    Base g{"G"};
+
+    // push back は、複写を入れるので、オリジナルを変更しても、コンテナは変わらない。
+    vec.push_back(a);
+    vec.emplace_back(g);
+    parr2(vec);
+    vec.push_back({"H"});
+    vec.emplace_back("I");
+    vec2.push_back(&a);
+    a.s = "B";
+    p2(a);
+    parr2(vec);
+    parr3(vec2);
+
+    // コンストラクタ
+    Base b{a};
+    Base c = a;
+    Base d = move(a);
+    Base e; e = d;
+    Base f = sub2(d);
+
+    Derived j{"J"};
+    Derived k(j);
+    p2(k);
+
+    // vector は deep copy
+    vector<Base> vec3{vec};
+    parr2(vec3);
+    vec.emplace_back(j);
+    parr2(vec);
+    parr2(vec3);
+    p("sub ==========================");
+}
 
 class Base2 {
 public:
@@ -65,6 +121,7 @@ return a; }
 
 int main()
 {
+    sub();
     auto a = Base("a");
     p2(a);
     vector<Base> vec = { Base("b"), Base("c") };
