@@ -10,7 +10,7 @@ i.out: i8n.cpp
 	clang++ ${CXXFLAGS} i8n.cpp -lpthread
 
 v.out: vec.cpp
-	clang++ ${CXXFLAGS} vec.cpp
+	clang++ ${CXXFLAGS} -o $@ $^
 
 b.out: string.cpp
 	clang++ ${CXXFLAGS} string.cpp

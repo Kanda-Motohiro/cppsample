@@ -11,5 +11,6 @@ int main()
     { shared_ptr<Base> b{a};
         p(b.use_count());
     }
+    Base *c = new Base{"c"};
     p("---- end of scope ----");
 }

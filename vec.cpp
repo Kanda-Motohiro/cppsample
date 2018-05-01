@@ -36,7 +36,7 @@ public:
     virtual const string toString() const { return s; }
 };
 
-Base& sub2(Base& a) { return a; }
+Base sub2() { return Base{"2"}; }
 
 class Derived: public Base {
 public:
@@ -49,6 +49,11 @@ public:
 
 void sub()
 {
+    {
+    Base f = sub2();
+    p2(f);
+    }
+
     vector<Base> vec;
     vector<Base*> vec2;
     //vector<Base&> vec3;
@@ -72,7 +77,6 @@ void sub()
     Base c = a;
     Base d = move(a);
     Base e; e = d;
-    Base f = sub2(d);
 
     Derived j{"J"};
     Derived k(j);
