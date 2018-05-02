@@ -2,28 +2,35 @@ run: a.out
 	./a.out
 
 CXXFLAGS=-g -Wall -std=c++1z -O0
+ASANFLAGS=-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
+# -fsanitize=leak  
+# clang-3.9: error: unsupported option '-fsanitize=leak' for target 'i686-pc-linux-gnu'
+# -fsanitize-address-use-after-scope
+# g++: エラー: unrecognized command line option : c++ (GCC) 6.4.1
 
+CXX=g++
 a.out: debug.cpp
-	clang++ ${CXXFLAGS} $^
+	$(CXX) ${CXXFLAGS} $(ASANFLAGS) $^
 
+#CXX=clang++
 S.out: serialize.cpp
-	clang++ ${CXXFLAGS} $^ -lboost_serialization
+	$(CXX) ${CXXFLAGS} $^ -lboost_serialization
 
 e.out: except.cpp
-	clang++ ${CXXFLAGS} $^
+	$(CXX) ${CXXFLAGS} $^
 
 s.out: shared.cpp
-	clang++ ${CXXFLAGS} $^
+	$(CXX) ${CXXFLAGS} $^
 
 i.out: i8n.cpp
-	clang++ ${CXXFLAGS} i8n.cpp -lpthread
+	$(CXX) ${CXXFLAGS} i8n.cpp -lpthread
 
 v.out: vec.cpp
-	clang++ ${CXXFLAGS} -o $@ $^
+	$(CXX) ${CXXFLAGS} -o $@ $^
 
 b.out: string.cpp
-	clang++ ${CXXFLAGS} string.cpp
+	$(CXX) ${CXXFLAGS} string.cpp
 
 hello: hello.cpp
 	#g++ -Wall -g -std=c++1z hello.cpp
-	clang++ ${CXXFLAGS} -o hello hello.cpp
+	$(CXX) ${CXXFLAGS} -o hello hello.cpp
