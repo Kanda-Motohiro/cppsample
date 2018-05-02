@@ -30,17 +30,24 @@ public:
 
 int main(int argc, char *argv[])
 {
-    if (argc == 1) {
+    string path;
+    if (argc == 3)
+        path = argv[2];
+    if (argc <= 2 || strcmp(argv[1], "out") == 0) {
         Base a{"a", 0x0a};
         Base b{"b", 0x0b};
         vector<Base> vec{a, b};
         
-        boost::archive::text_oarchive oa(cout);
+        ostream os{0};
+        if (path.size())
+            os.rdbuf(ofstream(path).rdbuf());
+        else
+            os.rdbuf(cout.rdbuf());
+        boost::archive::text_oarchive oa(os);
         oa << vec;
     } else {
-        string path = argv[1];
         istream is{0};
-        if (path[0] == '/')
+        if (path.size())
             is.rdbuf(ifstream(path).rdbuf());
         else
             is.rdbuf(cin.rdbuf());
