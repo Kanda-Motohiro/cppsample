@@ -27,13 +27,12 @@ class Base {
 public:
     Base(string a, int b) : s(a), i(b) { }
     Base() {} // これが無いと、解凍できない。
-    const string toString() { return s + to_string(i); }
+    const string toString() { return s + " " + to_string(i); }
 };
 
 int main(int argc, char *argv[])
 {
     string path;
-    streambuf *oldbuf = nullptr;
 
     if (argc == 3)
         path = argv[2];
@@ -45,24 +44,27 @@ int main(int argc, char *argv[])
         
         // if 文の中においたら、スコープが外れてアーカイブを参照して落ちた。
         ofstream out(path);
+        // 引数が必要。
+        ostream os(0);
+        // cin/cout と、ファイルのいずれかを扱う慣用句だそうな。
         if (path.size())
-            // cin/cout を入れ替えるにはこうするそうな。
-            oldbuf = cout.rdbuf(out.rdbuf());
-        boost::archive::text_oarchive oa(cout);
+            os.rdbuf(out.rdbuf());
+        else
+            os.rdbuf(cout.rdbuf());
+
+        boost::archive::text_oarchive oa(os);
         oa << vec;
-        if (oldbuf)
-            // 元に戻さないと、落ちる。
-            cout.rdbuf(oldbuf);
     } else {
         ifstream in(path);
+        istream is(0);
         if (path.size())
-            oldbuf = cin.rdbuf(in.rdbuf());
-        boost::archive::text_iarchive ia(cin);
+            is.rdbuf(in.rdbuf());
+        else
+            is.rdbuf(cin.rdbuf());
+        boost::archive::text_iarchive ia(is);
         vector<Base> vec;
         ia >> vec;
         for (Base& a: vec) { cout << a.toString() << endl; }
-        if (oldbuf)
-            cin.rdbuf(oldbuf);
     }
 }
 /*
