@@ -39,11 +39,9 @@ to_string(stoi("1234")) 整数と文字列の変換。
 
 Object.to_string は無い。
 
-try finally は無い。
-
 move をみんなが実装すれば、参照はいらないのでない？そもそも、 -> のかわりにドットを使いたいだけのシンタクティックシュガーなのでしょ。
 
-Stroustrup 先生の C++ の本 http://www.stroustrup.com/4th.html を読んでいるが、 あまりに、“resource allocation is initialization” (RAII) の賞賛がうるさいので、Paul E. McKenney さんの批判を紹介しておく。
+Stroustrup 先生の C++ の本を読んでいるが、 あまりに、“resource allocation is initialization” (RAII) の賞賛がうるさいので、Paul E. McKenney さんの批判を紹介しておく。
 Is Parallel Programming Hard, And, If So, What Can You Do About It?
 https://mirrors.edge.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.html 
 7.2.4 Scoped Locking 参照。
