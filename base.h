@@ -10,10 +10,14 @@ using namespace std;
 #define p(a) { cout << (a) << " at line " << __LINE__ << endl; }
 #define p2(a) { cout << (a).toString() << " at line " << __LINE__ << endl; }
 #define p3(a) { cout << (a)->toString() << " at line " << __LINE__ << endl; }
+#define parr(a) { for (const auto &x : (a)) { cout << x << ','; } \
+    cout << " at line " << __LINE__ << endl; }
 #define parr2(a) { for (const auto &x : (a)) { cout << x.toString() << ','; } \
         cout << " at line " << __LINE__ << endl; }
 #define parr3(a) { for (const auto &x : (a)) { cout << x->toString() << ','; } \
         cout << " at line " << __LINE__ << endl; }
+#define parr4(a) { for (const auto &x : (a)) { cout << x.first << ":" << x.second << ','; } \
+    cout << " at line " << __LINE__ << endl; }
 
 class Base {
 public:

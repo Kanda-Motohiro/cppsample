@@ -3,7 +3,10 @@ run: a.out
 
 CXXFLAGS=-g -Wall -std=c++1z -O0
 
-a.out: serialize.cpp
+a.out: debug.cpp
+	clang++ ${CXXFLAGS} $^
+
+S.out: serialize.cpp
 	clang++ ${CXXFLAGS} $^ -lboost_serialization
 
 e.out: except.cpp
