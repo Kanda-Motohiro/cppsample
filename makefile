@@ -9,7 +9,10 @@ ASANFLAGS=-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
 # g++: エラー: unrecognized command line option : c++ (GCC) 6.4.1
 
 CXX=g++
-a.out: booststr.cpp
+a.out: vectorentry.cpp
+	$(CXX) ${CXXFLAGS} $^
+
+B.out: booststr.cpp
 	$(CXX) ${CXXFLAGS} $^
 
 d.out: debug.cpp

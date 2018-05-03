@@ -29,7 +29,7 @@ C の関数のごく一部は、 cstdlib にあって、 std::printf のよう�
 
 std::exit は、(データセグメントに実体があるインスタンスの)デストラクタを実行する。 ::exit はしない。
 
-vector::push_back(const T& x) だけど、T はコピーコンストラクタが呼ばれて、複写したものがコンテナに入る。そもそも、参照を、コンテナに入れることはできないらしい。
+vector::push_back(const T& x) だけど、T はコピーコンストラクタが呼ばれて、new で複写したものがコンテナに入る。そもそも、参照を、コンテナに入れることはできないらしい。
 
 string, stream は、マルチバイトに対応していない。文字の境界はわからない。
 
@@ -42,13 +42,13 @@ Is Parallel Programming Hard, And, If So, What Can You Do About It?
 https://mirrors.edge.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.html 
 7.2.4 Scoped Locking 参照。
 
-boost すごい。strip==trim, split, startswith, s.replace("a", "b"),
-インラインフォーマット文字列構築、全部、できる。
+boost すごい。strip==trim, split, startswith, s.replace("a", "b"), インラインフォーマット文字列構築など、python にあって C++ で不便に思っていたことが全部、できる。
 
 ツール
 =======
 
 cppcheck, cpplint.py, scan-build from clang-analyzer package
+
 AddressSanitizer https://github.com/google/sanitizers/wiki/AddressSanitizer
 
 
