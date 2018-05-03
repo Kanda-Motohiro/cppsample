@@ -37,11 +37,18 @@ to_string(stoi("1234")) 整数と文字列の変換。
 
 Object.to_string は無い。シリアライズは、 boost にある。
 
-move をみんなが実装すれば、参照はいらないのでない？そもそも、 -> のかわりにドットを使いたいだけのシンタクティックシュガーなのでしょ。
-
 Stroustrup 先生の C++ の本を読んでいるが、 あまりに、“resource allocation is initialization” (RAII) の賞賛がうるさいので、Paul E. McKenney さんの批判を紹介しておく。
 Is Parallel Programming Hard, And, If So, What Can You Do About It?
 https://mirrors.edge.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.html 
 7.2.4 Scoped Locking 参照。
+
+boost すごい。strip==trim, split, startswith, s.replace("a", "b"),
+インラインフォーマット文字列構築、全部、できる。
+
+ツール
+=======
+
+cppcheck, cpplint.py, scan-build from clang-analyzer package
+AddressSanitizer https://github.com/google/sanitizers/wiki/AddressSanitizer
 
 
