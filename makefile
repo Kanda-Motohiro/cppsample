@@ -2,14 +2,11 @@ run: a.out
 	./a.out
 
 CXXFLAGS=-g -Wall -std=c++1z -O0
-ASANFLAGS=-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
-# -fsanitize=leak  
-# clang-3.9: error: unsupported option '-fsanitize=leak' for target 'i686-pc-linux-gnu'
-# -fsanitize-address-use-after-scope
-# g++: エラー: unrecognized command line option : c++ (GCC) 6.4.1
-
 CXX=g++
-a.out: async.cpp
+a.out: datetime.cpp
+	$(CXX) ${CXXFLAGS} $^ -lboost_date_time
+
+A.out: async.cpp
 	$(CXX) ${CXXFLAGS} -lpthread $^
 
 t.out: thread.cpp
@@ -20,6 +17,12 @@ V.out: vectorentry.cpp
 
 B.out: booststr.cpp
 	$(CXX) ${CXXFLAGS} $^
+
+ASANFLAGS=-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
+# -fsanitize=leak  
+# clang-3.9: error: unsupported option '-fsanitize=leak' for target 'i686-pc-linux-gnu'
+# -fsanitize-address-use-after-scope
+# g++: エラー: unrecognized command line option : c++ (GCC) 6.4.1
 
 d.out: debug.cpp
 	$(CXX) ${CXXFLAGS} $(ASANFLAGS) $^

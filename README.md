@@ -44,6 +44,7 @@ https://mirrors.edge.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfboo
 7.2.4 Scoped Locking 参照。
 
 boost すごい。strip==trim, split, startswith, s.replace("a", "b"), インラインフォーマット文字列構築など、python にあって C++ で不便に思っていたことが全部、できる。booststr.cpp 
+datetime 相当の日付計算は、datetime.cpp
 
 ツール
 =======
