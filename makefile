@@ -9,7 +9,10 @@ ASANFLAGS=-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer
 # g++: エラー: unrecognized command line option : c++ (GCC) 6.4.1
 
 CXX=g++
-a.out: thread.cpp
+a.out: async.cpp
+	$(CXX) ${CXXFLAGS} -lpthread $^
+
+t.out: thread.cpp
 	$(CXX) ${CXXFLAGS} -lpthread $^
 
 V.out: vectorentry.cpp
