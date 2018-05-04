@@ -4,6 +4,7 @@
  */
 #include <iostream>
 #include <vector>
+#include <array>
 #include <memory.h>
 using namespace std;
 
@@ -39,6 +40,46 @@ int main()
         printf("%p %s\n", &c, c.data);
     }
 
+    vector<int> ivec;
+    int i = 0x11111111;
+    ivec.push_back(i);
+    ivec.push_back({0x22222222});
+/*
+int であっても、コンテナに入るときは、 new される。
+(gdb) p &ivec
+$1 = (std::vector<int, std::allocator<int> > *) 0xbffff148
+(gdb) x/8x 0xbffff148
+0xbffff148:	0x08052e68	0x08052e70	0x08052e70
+(gdb) x/8x 0x08052e68
+0x8052e68:	0x11111111	0x22222222	0x00000000
+ */
+    array<int, 4> iarr;
+    iarr[0] = i;
+    iarr[1] = {0x33333333};
+/*
+array は、実体が入る。この場合、スタックにある。
+(gdb) p &iarr
+$1 = (std::array<int, 4u> *) 0xbffff134
+(gdb) x/4x 0xbffff134
+0xbffff134:	0x11111111	0x33333333	0xb7c18d00	0xb7fb9d2c
+ */
+    array<Base, 2> arr{'1', '2'};
+    //array<Base, 2> arr;
+    // エラー: no matching function for call to ‘Base::Base()’
+    // 候補では 1 個の引数が予期されますが、0 個の引数が与えられています
+    printf("%p %u\n", arr.data(), sizeof(arr));
+/*
+(gdb) p arr
+$1 = {_M_elems = {{data = '1' <repeats 15 times>}, {data = '2' <repeats 15 times>}}}
+(gdb) p &arr
+$2 = (std::array<Base, 2u> *) 0xbffff114
+(gdb) x/32x 0xbffff114
+0xbffff114:	0x31313131	0x31313131	0x31313131	0x00313131
+0xbffff124:	0x32323232	0x32323232	0x32323232	0x00323232
+(gdb) p arr.size()
+$3 = 2
+余分な管理情報は何もないはずなのに、どこから、要素数を得るのだろう。
+ */
     return 0;
 }
 #if 0
