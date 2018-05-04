@@ -3,20 +3,29 @@
  * released under https://creativecommons.org/publicdomain/zero/1.0/legalcode.ja
  */
 #include <iostream>
+#include <vector>
 #include <thread>
 #include <future>
 using namespace std;
 
 int worker(int a)
 {
+    cout << this_thread::get_id() << " started i=" << a << endl;
     this_thread::sleep_for(chrono::seconds{3});
     return a*a;
 }
 
 int main()
 {
-    future<int> f = async(launch::async, worker, 5);
-    cout << f.get() << endl;
+    vector<future<int>> vec;
+
+    for (int i=0; i< 64; i++) {
+        future<int> f = async(worker, i);
+        vec.push_back(move(f));
+    }
+    for (future<int>& f: vec) {
+        cout << f.get() << endl;
+    }
 }
 #if 0
 Thread 2 "a.out" hit Breakpoint 1, worker (a=5) at async.cpp:12
