@@ -3,8 +3,11 @@ run: a.out
 
 CXXFLAGS=-g -Wall -std=c++1z -O0
 CXX=g++
-a.out: datetime.cpp
-	$(CXX) ${CXXFLAGS} $^ -lboost_date_time
+a.out: init.cpp
+	$(CXX) ${CXXFLAGS} -o$@ $^
+
+datetime: datetime.cpp
+	$(CXX) ${CXXFLAGS} $^ -o$@ -lboost_date_time
 
 A.out: async.cpp
 	$(CXX) ${CXXFLAGS} -lpthread $^
