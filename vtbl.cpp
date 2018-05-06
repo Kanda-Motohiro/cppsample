@@ -4,6 +4,7 @@
  */
 #include "base.h"
 #include <locale>
+#include <typeinfo>
 
 class Derived: public base {
 public:
@@ -31,6 +32,22 @@ int main()
     pd->i-= 5;
     Base *bad = dynamic_cast<Base *>(pb);
     p(bad);
+    p(typeid(int).name());
+    const type_info& ti = typeid(*pb);
+    p(ti.name());
+/*
+(gdb) p ti
+$1 = (const std::type_info &) @0x80494c4: {
+  _vptr.type_info = 0x804b160 <vtable for __cxxabiv1::__si_class_type_info@@CXXABI_1.3+8>, 
+  __name = 0x80494d0 <typeinfo name for Derived> "7Derived"}
+(gdb) p &ti
+$2 = (const std::type_info *) 0x80494c4 <typeinfo for Derived>
+(gdb) x/16x 0x80494c4
+0x80494c4 <_ZTI7Derived>:	0x0804b160	0x080494d0	0x080494dc	0x72654437
+0x80494d4 <_ZTS7Derived+4>:	0x64657669	0x00000000	0x0804b088	0x080494e4
+0x80494e4 <_ZTS4base>:	0x73616234	0x00000065	0x0804b088	0x080494f4
+0x80494f4 <_ZTS4Base>:	0x73614234	0x00000065	0x3b031b01	0x00000070
+*/
 }
 #if 0
 base=0xbffff150 20 derived=0xbffff150 24
