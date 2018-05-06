@@ -40,3 +40,12 @@ public:
     virtual const string toString() const { return s; }
 };
 
+#include <memory.h>
+constexpr size_t SIZE = 16;
+class base {
+public:
+    char data[SIZE];
+    base(char a) { memset(data, a, SIZE -1); data[SIZE - 1] = 0; }
+    virtual const string toString() const { return data; }
+};
+
