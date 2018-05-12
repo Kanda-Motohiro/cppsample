@@ -49,8 +49,8 @@ i.out: i8n.cpp
 v.out: vec.cpp
 	$(CXX) ${CXXFLAGS} -o $@ $^
 
-b.out: string.cpp
-	$(CXX) ${CXXFLAGS} string.cpp
+string: string.cpp
+	$(CXX) ${CXXFLAGS} -o $@ $^
 
 hello: hello.cpp
 	#g++ -Wall -g -std=c++1z hello.cpp

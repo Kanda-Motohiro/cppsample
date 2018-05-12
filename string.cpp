@@ -13,8 +13,10 @@ int main()
 {
     string a(8, 'a');
     p(a);
-    printf("%p %u %u\n", &a, sizeof(a), a.size());
+    const char *f = a.c_str();
+    printf("%p %u %u %p\n", &a, sizeof(a), a.size(), f);
     a += "bbbbbbbb";
+    const char *g = a.c_str();
 /*
 0xbffff148 24 8
 17	    a += "bbbbbbbb";
