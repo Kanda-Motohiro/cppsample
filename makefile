@@ -3,7 +3,10 @@ run: a.out
 
 CXXFLAGS=-g -Wall -std=c++1z -O0
 CXX=g++
-a.out: vtbl.cpp
+a.out: func.cpp
+	$(CXX) ${CXXFLAGS} -o$@ $^
+
+vtbl: vtbl.cpp
 	$(CXX) ${CXXFLAGS} -o$@ $^
 
 init: init.cpp
