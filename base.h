@@ -25,11 +25,11 @@ public:
     Base() { cout << "def ctor" << endl; }
     Base(string a) :s(a) { cout << "ctor-" << a << endl; }
     // copy ctor
-    Base(const Base& b) :s(b.s) { cout << "copy-" << b.s << endl; }
+    Base(const Base& b) :s(b.s) { cout << "copy-ctor-" << b.s << endl; }
     Base& operator=(const Base& b) { s = b.s; cout << "assign-" << b.s << endl; return *this; }
 
     // move ctor
-    Base(Base&& b) :s(b.s) { b.s = ""; cout << "moved " << s << endl; }
+    Base(Base&& b) :s(b.s) { b.s = ""; cout << "move-ctor " << s << endl; }
     Base& operator=(Base&& b) { s = b.s; b.s = ""; cout << "move-" << s << endl; return *this; }
 
     // なんで、これが使われることがある？
