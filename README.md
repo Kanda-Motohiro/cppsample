@@ -89,6 +89,8 @@ $ ls /usr/include/clang
 ARCMigrate   Basic    Edit          Index    Sema
 これは何？
 
+llvm にも、 libc はあるの？ディストリビューションが決めることなの？
+
 C++ を一ヶ月使った感想
 ======================
 
@@ -97,10 +99,12 @@ C で書いていた頃、私は、レジスタに入らないデータと、１
 C++ は楽だ。裏では、 memcpy, malloc の嵐なのだろうが、これが許されるのは嬉しい。
 
 [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md)
+=======================
+
 素晴らしい。私のような初心者に嬉しいアドバイスがたくさんある。
 惜しむらくは、ライセンスで、"for your personal or internal business use" ならば自由に複写、翻案してよいとのこと。これ、全然、 MIT でないじゃない。
 
-issue を見ると、訳を公開しても良いみたいなので、タイトルだけだが、[C++ Core Guidelines の訳（タイトルだけ）](https://github.com/Kanda-Motohiro/CppCoreGuidelines-Ja/blob/master/CppCoreGuidelines.md) を公開する。
+issue を見ると、訳を公開しても良いみたいなので、ほぼタイトルだけだが、[C++ Core Guidelines の日本語訳](https://github.com/Kanda-Motohiro/CppCoreGuidelines-Ja/blob/master/CppCoreGuidelines.md) を公開する。
 
 vtbl
 ====

@@ -3,7 +3,10 @@ run: a.out
 
 CXXFLAGS=-g -Wall -std=c++1z -O0
 CXX=g++
-a.out: bind.cpp
+a.out: gsl.cpp
+	$(CXX) ${CXXFLAGS} -I/opt/GSL/include -o$@ $^
+
+bind: bind.cpp
 	clang++ ${CXXFLAGS} -o$@ $^
 
 move: move.cpp
