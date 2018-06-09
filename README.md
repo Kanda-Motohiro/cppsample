@@ -141,3 +141,8 @@ Derived (0x0xb5e44bf4) 0
       primary-for Derived (0x0xb5e44bf4)
 
 
+Tips
+====
+
+http://en.cppreference.com/w/cpp/compiler_support - 各コンパイラの標準サポートマトリクス
+
