@@ -3,7 +3,19 @@ run: a.out
 
 CXXFLAGS=-g -Wall -std=c++1z -O0
 CXX=g++
-a.out: vtbl.cpp
+a.out: gsl.cpp
+	$(CXX) ${CXXFLAGS} -I/opt/GSL/include -o$@ $^
+
+bind: bind.cpp
+	clang++ ${CXXFLAGS} -o$@ $^
+
+move: move.cpp
+	$(CXX) ${CXXFLAGS} -o$@ $^
+
+func: func.cpp
+	$(CXX) ${CXXFLAGS} -o$@ $^
+
+vtbl: vtbl.cpp
 	$(CXX) ${CXXFLAGS} -o$@ $^
 
 init: init.cpp

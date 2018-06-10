@@ -89,4 +89,60 @@ $ ls /usr/include/clang
 ARCMigrate   Basic    Edit          Index    Sema
 これは何？
 
+llvm にも、 libc はあるの？ディストリビューションが決めることなの？
+
+C++ を一ヶ月使った感想
+======================
+
+C で書いていた頃、私は、レジスタに入らないデータと、１CPU 命令で終わらない操作を憎んだ。少なくても、そうであるものとないものを区別した。
+整数とポインタ以外のものを引数や戻り値に取る関数など書いたことも読んだこともなかった。
+C++ は楽だ。裏では、 memcpy, malloc の嵐なのだろうが、これが許されるのは嬉しい。
+
+[C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md)
+=======================
+
+素晴らしい。私のような初心者に嬉しいアドバイスがたくさんある。
+惜しむらくは、ライセンスで、"for your personal or internal business use" ならば自由に複写、翻案してよいとのこと。これ、全然、 MIT でないじゃない。
+
+issue を見ると、訳を公開しても良いみたいなので、ほぼタイトルだけだが、[C++ Core Guidelines の日本語訳](https://github.com/Kanda-Motohiro/CppCoreGuidelines-Ja/blob/master/CppCoreGuidelines.md) を公開する。
+
+vtbl
+====
+
+なんだこれは？
+
+$ vi vtbl.cpp.002t.class
+
+Vtable for base
+base::_ZTV4base: 3u entries
+0     (int (*)(...))0
+4     (int (*)(...))(& _ZTI4base)
+8     (int (*)(...))base::toString
+
+Class base
+   size=20 align=4
+   base size=20 base align=4
+base (0x0xb60c9f18) 0
+    vptr=((& base::_ZTV4base) + 8u)
+
+    Vtable for Derived
+
+Derived::_ZTV7Derived: 3u entries
+0     (int (*)(...))0
+4     (int (*)(...))(& _ZTI7Derived)
+8     (int (*)(...))Derived::toString
+
+Class Derived
+   size=24 align=4
+   base size=24 base align=4
+Derived (0x0xb5e44bf4) 0
+    vptr=((& Derived::_ZTV7Derived) + 8u)
+  base (0x0xb5eda118) 0
+      primary-for Derived (0x0xb5e44bf4)
+
+
+Tips
+====
+
+http://en.cppreference.com/w/cpp/compiler_support - 各コンパイラの標準サポートマトリクス
 
