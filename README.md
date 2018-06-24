@@ -41,10 +41,14 @@ Object.to_string は無い。シリアライズは、 boost にある。serializ
 Stroustrup 先生の C++ の本を読んでいるが、 あまりに、“resource allocation is initialization” (RAII) の賞賛がうるさいので、Paul E. McKenney さんの批判を紹介しておく。
 Is Parallel Programming Hard, And, If So, What Can You Do About It?
 https://mirrors.edge.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.html 
-7.2.4 Scoped Locking 参照。
+7.2.4 Scoped Locking 参照。日本語訳も探せばある。
 
 boost すごい。strip==trim, split, startswith, s.replace("a", "b"), インラインフォーマット文字列構築など、python にあって C++ で不便に思っていたことが全部、できる。booststr.cpp 
 datetime 相当の日付計算は、datetime.cpp
+
+テンプレートの関数も、 gdb でブレークポイントをかけたり、シングルステップ実行できる。template.cpp
+
+C++ 名前のマングリングは、 nm --demangle でわかる。
 
 ツール
 =======
