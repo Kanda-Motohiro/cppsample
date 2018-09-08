@@ -1,0 +1,6 @@
+# build.ninja
+# https://ninja-build.org/manual.html
+cxxflags = -Wall -g -std=c++1z -O0
+rule cpp
+    command = g++ $cxxflags $in -o $out
+build a.out: cpp template.cpp

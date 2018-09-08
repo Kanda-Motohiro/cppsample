@@ -1,0 +1,217 @@
+２８章　メタプログラミング
+
+２８．２　型関数
+
+問題
+
+class Base {
+public:
+virtual ~Base() {}
+};
+
+template<typename T>
+T Double(T a)
+{
+    return a+a;
+}
+
+    int a = Double<int>(1);
+
+    auto b = Double<Base>(Base()); // error
+
+template.cpp: In instantiation of ‘T Double(T) [with T = Base]’:
+template.cpp:30:33:   required from here
+template.cpp:17:13: エラー: no match for ‘operator+’ (operand types are ‘Base’ and ‘Base’)
+     return a+a;
+            ~^~
+
+テンプレートを具象化する時に出るコンパイラのエラーメッセージがわかりにくい。
+
+対策
+型関数で、テンプレート引数に与えられた型を制限する。
+
+#include <type_traits>
+
+template<typename T>
+T Double(T a)
+{
+    static_assert(std::is_integral<T>::value); // XXX
+
+template.cpp: In instantiation of ‘T Double(T) [with T = Base]’:
+template.cpp:31:33:   required from here
+template.cpp:16:5: エラー: static assertion failed
+     static_assert(std::is_integral<T>::value);
+
+
+
+型関数とは。
+標準ライブラリの機能。型を引数、戻り値に取る。３５．４節。１０１８頁。
+
+例
+is_integral<T>::value
+整数型か？
+
+is_integral<int>::value
+は、真。
+
+後ろに、::value と付けないといけないのは、そういうきまり。::type を使うときもある。
+
+型関数いろいろ
+is_object<X>, is_const<X>, is_base_of<X, Y> X は Y の基底か？
+
+なんの役に立つかわからんなあ
+
+７８６ページの例。
+
+template<typename T>
+void copy(T* p, const T* q, int n)
+{
+    if (std::is_pod<T>::value)
+        memcpy(p, q, n*sizeof(T));
+    else
+        for (int i=0; i!=n; i++)
+            p[i] = q[i];
+}
+
+pod とは。
+２１７頁。 plain old data. メモリ上連続配置されたただのデータ。
+
+    constexpr int n = 32;
+    int b[n];
+    int c[n];
+    Base d[n];
+    Base e[n];
+
+    copy(b, c, n);
+    copy(d, e, n);
+
+(gdb) n
+42	    copy(b, c, n);
+(gdb) s
+copy<int> (p=0xbffff0c8, q=0xbffff048, n=32) at template.cpp:27
+27	        memcpy(p, q, n*sizeof(T));
+
+(gdb) s
+43	    copy(d, e, n);
+(gdb) s
+copy<Base> (p=0xbfffefc8, q=0xbfffef48, n=32) at template.cpp:29
+29	        for (int i=0; i!=n; i++)
+(gdb) s
+30	            p[i] = q[i];
+
+展開系が、違う。テンプレートの中の、 if 文に対応する実行時 CPU 命令は無いのはわかるね。
+
+７７８頁にある注意。
+私はこの種の関数の頭文字を大文字にする。
+Is_pod<T>() は、std::is_pod<T>::value のこと。
+ストラウストラップ先生のこだわり。
+
+conditional
+
+テンプレートの中で、条件によって、型を変えることができる。
+
+template<typename T>
+class K {
+public:
+    T body;
+    typename std::conditional<std::is_pod<T>::value, int, char>::type size;
+};
+
+int main()
+{
+    K<int> kint;
+    K<Base> kbase;
+
+    printf("kint.size=%d kbase.size=%d\n", sizeof(kint.size), sizeof(kbase.size));
+
+$ ./a.out
+kint.size=4 kbase.size=1
+
+conditional の実装に注目。これが、テンプレートプログラミング。
+
+namespace std {
+template<bool C, typename T, typename F>
+struct conditional {
+    using type = T;
+};
+
+template<typename T, typename F>
+struct conditional<false,T,F> {
+    using type = F;
+};
+
+SFINAE: Substitution Failure Is Not An Error
+６９２頁。テンプレートの置換失敗はエラーではない。
+
+conditional<std::is_pod<T>::value, int, char>
+を見ると、 pod でない場合、conditional<false の特殊化の方にマッチするので、F になる。
+逆の場合、汎用の一次テンプレートが選択され、T になる。
+
+有名なメタプログラミングの例。階乗。
+
+template<int N>
+constexpr int fac() { return N*fac<N-1>(); }
+template<>
+constexpr int fac<1>() { return 1; }
+
+(gdb) b fac<1>
+Function "fac<1>" not defined.
+
+(gdb) p x5
+$2 = 120
+
+enable_if
+
+テンプレートの中で、条件によって、型を消すことができる。
+
+これも、有名で便利、らしい。
+
+やっぱり、何がやりたいのか、よくわからん。
+これ、テンプレートメタプログラミング、でしかできないことって、なんだろう。
+
+可変個引数テンプレート
+
+template<typename... Types>
+void f(Types... args);
+
+は、そういうもの。
+
+
+３４章　メモリと資源
+
+bitset, vector<bool> は、使い方が面倒だけど、メモリが少なくてすむ。
+
+タプルは、どんどん、使いやすくなる。
+
+    std::tuple<int, std::string, Base> t{3, "hello", Base{}};
+    int i = std::get<0>(t);
+    std::string s;
+    Base b;
+    std::tie(i, s, b) = t;
+    auto [j, k, l] = t; // c++17
+
+
+unique_ptr, shared_ptr, weak_ptr
+
+３４．４　アロケータ
+
+string や、 vector などのコンテナはコンストラクタに、アロケータを取ることができる。
+
+指定しなければ、 new でメモリ確保する。
+mmap されて、プロセス間で共用されるベクトル、などを作ることができる。かな？
+
+３４．６　未初期化メモリ
+
+３２．５．６　９４１頁に、 uninitialized_fill がある。これは、コンテナ実装者が、
+自分が取った生のメモリ上に、オブジェクトを構築する時に使う。
+
+
+
+
+さいごに
+
+型って、そんなに偉いんかい
+世の中のバグのどれくらいが、型（を言語が持たないため、持ってもプログラマが誤用した）が原因なのだろう
+
+
+
