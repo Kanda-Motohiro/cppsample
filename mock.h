@@ -1,6 +1,6 @@
 class Mock: public Klass {
 public:
-    virtual void hello() { printf("mock\n"); }
+    Mock() { id = 0x777; }
 };
 #if 1
 namespace std {
