@@ -1,5 +1,5 @@
 #include "klass.h"
-#include "mock.h"
+//#include "mock.h"
 
 std::shared_ptr<Klass> sub()
 {
