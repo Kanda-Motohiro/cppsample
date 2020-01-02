@@ -1,6 +1,6 @@
 class Mock: public Base {
 public:
-    void hello() override { printf("mock class\n"); }
+    void do_something() override { printf("mock class\n"); }
 };
 
 namespace std {

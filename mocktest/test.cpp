@@ -1,24 +1,24 @@
 #include "base.h"
 #include "mock.h"
-extern std::shared_ptr<Base> sub();
+extern std::shared_ptr<Base> new_base();
 int main()
 {
-    auto out = sub();
-    out->hello();
+    auto out = new_base();
+    out->do_something();
 }
 #if 0
-[kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O3 sub.cpp mock.cpp
+[kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O3 new_base.cpp mock.cpp
 [kanda@f25 cppsample]$ ./a.out
 base class
 [kanda@f25 cppsample]$ rm a.out
-[kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O0 sub.cpp mock.cpp
+[kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O0 new_base.cpp mock.cpp
 [kanda@f25 cppsample]$ ./a.out
 mock
 
-[kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O0 sub.cpp -c
+[kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O0 new_base.cpp -c
 [kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O0 mock.cpp -c
 [kanda@f25 cppsample]$ objdump --disassemble --demangle  mock.o > mock.asm
-[kanda@f25 cppsample]$ objdump --disassemble --demangle  sub.o > sub.asm
+[kanda@f25 cppsample]$ objdump --disassemble --demangle  new_base.o > sub.asm
 [kanda@f25 cppsample]$ grep make_shared *.asm | grep -v _tag
 mock.asm:000000d5 <std::shared_ptr<Klass> std::make_shared<Klass>()>:
 mock.asm:  e2:	e8 fc ff ff ff       	call   e3 <std::shared_ptr<Klass> std::make_shared<Klass>()+0xe>
@@ -32,17 +32,17 @@ mock.asm:  30:	e8 fc ff ff ff       	call   31 <std::shared_ptr<Mock> std::make_
 mock.asm:  38:	eb 1c                	jmp    56 <std::shared_ptr<Mock> std::make_shared<Mock>()+0x56>
 mock.asm:  43:	e8 fc ff ff ff       	call   44 <std::shared_ptr<Mock> std::make_shared<Mock>()+0x44>
 mock.asm:  51:	e8 fc ff ff ff       	call   52 <std::shared_ptr<Mock> std::make_shared<Mock>()+0x52>
-sub.asm:セクション .text._ZSt11make_sharedI5KlassJEESt10shared_ptrIT_EDpOT0_ の逆アセンブル:
-sub.asm:00000000 <std::shared_ptr<Klass> std::make_shared<Klass>()>:
-sub.asm:   e:	e8 fc ff ff ff       	call   f <std::shared_ptr<Klass> std::make_shared<Klass>()+0xf>
-sub.asm:  21:	e8 fc ff ff ff       	call   22 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x22>
-sub.asm:  30:	e8 fc ff ff ff       	call   31 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x31>
-sub.asm:  38:	eb 1c                	jmp    56 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x56>
-sub.asm:  43:	e8 fc ff ff ff       	call   44 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x44>
-sub.asm:  51:	e8 fc ff ff ff       	call   52 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x52>
+new_base.asm:セクション .text._ZSt11make_sharedI5KlassJEESt10shared_ptrIT_EDpOT0_ の逆アセンブル:
+new_base.asm:00000000 <std::shared_ptr<Klass> std::make_shared<Klass>()>:
+new_base.asm:   e:	e8 fc ff ff ff       	call   f <std::shared_ptr<Klass> std::make_shared<Klass>()+0xf>
+new_base.asm:  21:	e8 fc ff ff ff       	call   22 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x22>
+new_base.asm:  30:	e8 fc ff ff ff       	call   31 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x31>
+new_base.asm:  38:	eb 1c                	jmp    56 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x56>
+new_base.asm:  43:	e8 fc ff ff ff       	call   44 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x44>
+new_base.asm:  51:	e8 fc ff ff ff       	call   52 <std::shared_ptr<Klass> std::make_shared<Klass>()+0x52>
 [kanda@f25 cppsample]$
 
-[kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O3 sub.cpp -c
+[kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O3 new_base.cpp -c
 [kanda@f25 cppsample]$ g++ -Wall -g -std=c++1z -O3 mock.cpp -c
 [kanda@f25 cppsample]$ grep make_shared *.asm | grep -v _tag
 mock.asm:00000000 <std::shared_ptr<Klass> std::make_shared<Klass>()>:
@@ -72,7 +72,7 @@ Num     Type           Disp Enb Address    What
 
 00000000 <std::shared_ptr<Klass> std::make_shared<Klass>()>:
    0:   53                      push   %ebx
-   1:   83 ec 24                sub    $0x24,%esp
+   1:   83 ec 24                new_base    $0x24,%esp
    4:   8b 5c 24 2c             mov    0x2c(%esp),%ebx
    8:   6a 14                   push   $0x14
    a:   e8 fc ff ff ff          call   b <std::shared_ptr<Klass> std::make_shared<Klass>()+0xb>
@@ -95,10 +95,10 @@ base class
 [Inferior 1 (process 4456) exited normally]
 
 (gdb) s
-std::make_shared<Klass> () at sub.cpp:6
+std::make_shared<Klass> () at new_base.cpp:6
 6	    auto out = std::make_shared<Klass>();
 (gdb) s
-std::allocate_shared<Klass, std::allocator<Klass>>(std::allocator<Klass> const&) (__a=...) at sub.cpp:6
+std::allocate_shared<Klass, std::allocator<Klass>>(std::allocator<Klass> const&) (__a=...) at new_base.cpp:6
 6	    auto out = std::make_shared<Klass>();
 
 #endif

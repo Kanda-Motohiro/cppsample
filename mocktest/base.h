@@ -2,5 +2,5 @@
 #include <stdio.h>
 class Base {
 public:
-    virtual void hello() { printf("base class\n"); }
+    virtual void do_something() { printf("base class\n"); }
 };
